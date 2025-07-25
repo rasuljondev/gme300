@@ -396,6 +396,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Push",
+            "id": "da1fc328-0510-42d3-bdde-c40cb46bcc0a",
+            "actions": [
+                {
+                    "name": "Punch",
+                    "type": "Button",
+                    "id": "a521b084-154f-45c9-87c2-113acb40b449",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2b0a6950-a7c0-44f2-8bd6-fa284c11707a",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Hold(duration=1),Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Punch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

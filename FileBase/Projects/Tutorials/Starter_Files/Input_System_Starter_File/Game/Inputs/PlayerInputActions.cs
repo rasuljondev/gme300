@@ -418,6 +418,34 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Push"",
+            ""id"": ""da1fc328-0510-42d3-bdde-c40cb46bcc0a"",
+            ""actions"": [
+                {
+                    ""name"": ""Punch"",
+                    ""type"": ""Button"",
+                    ""id"": ""a521b084-154f-45c9-87c2-113acb40b449"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""2b0a6950-a7c0-44f2-8bd6-fa284c11707a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Hold(duration=1),Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Punch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -440,6 +468,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Forklift_Move = m_Forklift.FindAction("Move", throwIfNotFound: true);
         m_Forklift_LiftUp = m_Forklift.FindAction("LiftUp", throwIfNotFound: true);
         m_Forklift_LiftDown = m_Forklift.FindAction("LiftDown", throwIfNotFound: true);
+        // Push
+        m_Push = asset.FindActionMap("Push", throwIfNotFound: true);
+        m_Push_Punch = m_Push.FindAction("Punch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -666,6 +697,39 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     }
     public ForkliftActions @Forklift => new ForkliftActions(this);
+
+    // Push
+    private readonly InputActionMap m_Push;
+    private IPushActions m_PushActionsCallbackInterface;
+    private readonly InputAction m_Push_Punch;
+    public struct PushActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public PushActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Punch => m_Wrapper.m_Push_Punch;
+        public InputActionMap Get() { return m_Wrapper.m_Push; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PushActions set) { return set.Get(); }
+        public void SetCallbacks(IPushActions instance)
+        {
+            if (m_Wrapper.m_PushActionsCallbackInterface != null)
+            {
+                @Punch.started -= m_Wrapper.m_PushActionsCallbackInterface.OnPunch;
+                @Punch.performed -= m_Wrapper.m_PushActionsCallbackInterface.OnPunch;
+                @Punch.canceled -= m_Wrapper.m_PushActionsCallbackInterface.OnPunch;
+            }
+            m_Wrapper.m_PushActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Punch.started += instance.OnPunch;
+                @Punch.performed += instance.OnPunch;
+                @Punch.canceled += instance.OnPunch;
+            }
+        }
+    }
+    public PushActions @Push => new PushActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -686,5 +750,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnLiftUp(InputAction.CallbackContext context);
         void OnLiftDown(InputAction.CallbackContext context);
+    }
+    public interface IPushActions
+    {
+        void OnPunch(InputAction.CallbackContext context);
     }
 }
