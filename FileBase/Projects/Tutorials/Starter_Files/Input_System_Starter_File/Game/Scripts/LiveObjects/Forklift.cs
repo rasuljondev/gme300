@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.InputSystem; // <-- New Input System
 
 namespace Game.Scripts.LiveObjects
 {
@@ -23,14 +24,46 @@ namespace Game.Scripts.LiveObjects
         public static event Action onDriveModeEntered;
         public static event Action onDriveModeExited;
 
+        // New Input System
+        private PlayerInputActions inputActions;
+        private Vector2 moveInput;
+        private bool liftUpPressed;
+        private bool liftDownPressed;
+
+        private void Awake()
+        {
+            inputActions = new PlayerInputActions();
+        }
+
         private void OnEnable()
         {
+            inputActions.Forklift.Enable();
+            inputActions.Forklift.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+            inputActions.Forklift.Move.canceled += ctx => moveInput = Vector2.zero;
+            inputActions.Forklift.LiftUp.performed += ctx => liftUpPressed = true;
+            inputActions.Forklift.LiftUp.canceled += ctx => liftUpPressed = false;
+            inputActions.Forklift.LiftDown.performed += ctx => liftDownPressed = true;
+            inputActions.Forklift.LiftDown.canceled += ctx => liftDownPressed = false;
+
             InteractableZone.onZoneInteractionComplete += EnterDriveMode;
+        }
+
+        private void OnDisable()
+        {
+            inputActions.Forklift.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
+            inputActions.Forklift.Move.canceled -= ctx => moveInput = Vector2.zero;
+            inputActions.Forklift.LiftUp.performed -= ctx => liftUpPressed = true;
+            inputActions.Forklift.LiftUp.canceled -= ctx => liftUpPressed = false;
+            inputActions.Forklift.LiftDown.performed -= ctx => liftDownPressed = true;
+            inputActions.Forklift.LiftDown.canceled -= ctx => liftDownPressed = false;
+
+            inputActions.Forklift.Disable();
+            InteractableZone.onZoneInteractionComplete -= EnterDriveMode;
         }
 
         private void EnterDriveMode(InteractableZone zone)
         {
-            if (_inDriveMode !=true && zone.GetZoneID() == 5) //Enter ForkLift
+            if (_inDriveMode != true && zone.GetZoneID() == 5) //Enter ForkLift
             {
                 _inDriveMode = true;
                 _forkliftCam.Priority = 11;
@@ -43,10 +76,9 @@ namespace Game.Scripts.LiveObjects
         private void ExitDriveMode()
         {
             _inDriveMode = false;
-            _forkliftCam.Priority = 9;            
+            _forkliftCam.Priority = 9;
             _driverModel.SetActive(false);
             onDriveModeExited?.Invoke();
-            
         }
 
         private void Update()
@@ -55,16 +87,19 @@ namespace Game.Scripts.LiveObjects
             {
                 LiftControls();
                 CalcutateMovement();
-                if (Input.GetKeyDown(KeyCode.Escape))
+                // if (Input.GetKeyDown(KeyCode.Escape))
+                if (Keyboard.current.escapeKey.wasPressedThisFrame)
                     ExitDriveMode();
             }
-
         }
 
         private void CalcutateMovement()
         {
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
+            // float h = Input.GetAxisRaw("Horizontal");
+            // float v = Input.GetAxisRaw("Vertical");
+            float h = moveInput.x;
+            float v = moveInput.y;
+
             var direction = new Vector3(0, 0, v);
             var velocity = direction * _speed;
 
@@ -80,9 +115,11 @@ namespace Game.Scripts.LiveObjects
 
         private void LiftControls()
         {
-            if (Input.GetKey(KeyCode.R))
+            // if (Input.GetKey(KeyCode.R))
+            if (liftUpPressed)
                 LiftUpRoutine();
-            else if (Input.GetKey(KeyCode.T))
+            // else if (Input.GetKey(KeyCode.T))
+            else if (liftDownPressed)
                 LiftDownRoutine();
         }
 
@@ -109,11 +146,5 @@ namespace Game.Scripts.LiveObjects
             else if (_lift.transform.localPosition.y <= _liftUpperLimit.y)
                 _lift.transform.localPosition = _liftLowerLimit;
         }
-
-        private void OnDisable()
-        {
-            InteractableZone.onZoneInteractionComplete -= EnterDriveMode;
-        }
-
     }
 }
