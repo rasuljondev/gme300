@@ -2278,6 +2278,7 @@ MonoBehaviour:
   - {fileID: 547960046}
   _crateCollider: {fileID: 147778362}
   _interactableZone: {fileID: 197238855}
+  _requiredHitsToBreak: 5
 --- !u!65 &147778362
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18253,8 +18254,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 972744894}
-  m_LocalRotation: {x: 0.22150654, y: 0.04673603, z: -0.010628898, w: 0.9739803}
-  m_LocalPosition: {x: -0.48177248, y: 4.5286655, z: -4.833789}
+  m_LocalRotation: {x: 0.22150326, y: 0.047036957, z: -0.010697337, w: 0.9739658}
+  m_LocalPosition: {x: -0.48177403, y: 4.5286655, z: -4.833789}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 130697454}
@@ -35972,7 +35973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: c14085171003ee2478ef40ebd5fcbee8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.86
+      value: 4.68
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: c14085171003ee2478ef40ebd5fcbee8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -35980,7 +35981,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: c14085171003ee2478ef40ebd5fcbee8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.91
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: c14085171003ee2478ef40ebd5fcbee8, type: 3}
       propertyPath: m_LocalRotation.w
