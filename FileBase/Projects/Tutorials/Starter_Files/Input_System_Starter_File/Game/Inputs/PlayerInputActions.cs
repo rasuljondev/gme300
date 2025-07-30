@@ -421,12 +421,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         },
         {
             ""name"": ""Push"",
-            ""id"": ""da1fc328-0510-42d3-bdde-c40cb46bcc0a"",
+            ""id"": ""79a4e026-8225-4ca2-9020-32d4f42d234b"",
             ""actions"": [
                 {
                     ""name"": ""Punch"",
                     ""type"": ""Button"",
-                    ""id"": ""a521b084-154f-45c9-87c2-113acb40b449"",
+                    ""id"": ""87220e22-2a2e-4e0c-9eb5-107b081d0649"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -436,9 +436,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""2b0a6950-a7c0-44f2-8bd6-fa284c11707a"",
+                    ""id"": ""3ec1c3e8-2ebc-4ec4-9ee0-548c6cf24ce5"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": ""Hold(duration=1),Tap"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Punch"",

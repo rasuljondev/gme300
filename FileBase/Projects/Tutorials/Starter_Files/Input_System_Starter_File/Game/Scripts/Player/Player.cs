@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.Scripts.LiveObjects;
 using Cinemachine;
-using UnityEngine.InputSystem; // <-- Required for Input System
+using UnityEngine.InputSystem;
 
 namespace Game.Scripts.Player
 {
@@ -102,13 +102,22 @@ namespace Game.Scripts.Player
 
         private void ReleasePlayerControl()
         {
-            _canMove = false;
-            _followCam.Priority = 9;
+            // _canMove = false;
+            // _followCam.Priority = 9;
+
+            _inputActions.Player.Disable(); // Disables input map
+            _canMove = false; // Disables movement logic
+            _followCam.Priority = 9; // Lower priority camera
         }
 
         private void ReturnPlayerControl()
         {
             _model.SetActive(true);
+
+            // _canMove = true;
+            // _followCam.Priority = 10;
+
+            _inputActions.Player.Enable(); // Re-enables input map
             _canMove = true;
             _followCam.Priority = 10;
         }
